@@ -1,0 +1,113 @@
+<extend name="Public/base" />
+<block name="body">
+  <div class="page-header">
+    <div class="page-title">
+      <h3>{$meta_title}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="widget box">
+        <div class="widget-content no-padding">
+         <div class="row">
+            <div class="dataTables_header clearfix">
+				<div class="col-md-6">
+					<a class="btn btn-primary" href="{:U('User/add')}">添加用户</a>
+					<a class="btn ajax-post" url="{:U('User/changeStatus',array('method'=>'resumeUser'))}" target-form="ids">启 用</a>
+					<a class="btn ajax-post" url="{:U('User/changeStatus',array('method'=>'forbidUser'))}" target-form="ids">禁 用</a>
+					<a class="btn ajax-post" url="{:U('User/delete?id=')}" target-form="ids">删 除</a>
+				</div>
+              <div class="col-md-6 dataTables_filter">
+                  <label>
+                  <div class="input-group search-form"> <span class="input-group-addon"><a id="search" href="javascript:;" id="search" url="{:U('index')}"><i class="icon-search"></i></a></span>
+                    <input type="text" class="form-control search-input" placeholder="请输入用户昵称或者ID" name="nickname" value="{:I('nickname')}">
+                  </div>
+                  </label>
+              </div>
+            </div>
+         </div>
+          <table class="table table-striped table-bordered table-hover table-checkable align-center">
+            <thead>
+              <tr>
+                <th class="checkbox-column text-center"> <input type="checkbox" class="uniform"></th>
+                <th class="text-center">UID</th>
+                <th class="text-center"><i class="icon-user"></i> 用户名</th>
+                <th class="text-center"><i class="icon-flag"></i> 名称</th>
+                <th class="text-center"><i class="icon-tags"></i> 类型</th>
+                <th class="text-center"><i class="icon-desktop"></i> 业务概况</th>
+                <th class="text-center"><i class="icon-bar-chart"></i> 统计概况</th>
+                <th class="text-center"><i class="icon-time"></i> 最后登录</th>
+                <th class="text-center"><i class="icon-refresh"></i> 状态</th>
+                <th class="text-center"><i class="icon-cog"></i> 操作</th>
+              </tr>
+            </thead>
+            <tbody>
+                <notempty name="_list">
+              
+              <volist name="_list" id="vo">
+                <tr>
+                  <td class="checkbox-column"><input type="checkbox" class="uniform ids" name="id[]" value="{$vo.uid}" /></td>
+                  <td>{$vo.uid}</td>
+                  <td>{$vo.username}</td>
+                  <td>{$vo.nickname}</td>
+                  <td>{$vo.usertype_text}</td>
+				  <td class="text-left">
+				  设备: 5 台<span><i class="icon-link"></i> <a href="{:U('User/edit?id='.$vo['uid'])}" class="confirm-dialog">绑定</a></span></br>
+				  应用点: 3 个<span><i class="icon-sitemap"></i> <a href="{:U('User/edit?id='.$vo['uid'])}" class="confirm-dialog">添加</a></span></br>
+				  云认证: 1 个<span><i class="icon-cloud"></i> <a href="{:U('User/edit?id='.$vo['uid'])}" class="confirm-dialog">设置</a></span></br>
+				  余额: 100 元 <span><i class="icon-plus"></i> <a href="{:U('User/edit?id='.$vo['uid'])}" class="confirm-dialog">充值</a></span></td>
+                  <td class="text-left">今日: </br>昨日: </br>历史: </td>
+                  <td class="text-left">{$vo.last_login_time|time_format}</br>IP: <a target=_blank href="http://ip.chinaz.com/?IP={:long2ip($vo['last_login_ip'])}">{:long2ip($vo['last_login_ip'])}</a></br>累计登录:{$vo.login}</td>
+                  <td>{$vo.status_text}</td>
+                  <td>
+                    <i class="icon-edit"></i> <a href="{:U('User/edit?id='.$vo['uid'])}" class="confirm-dialog">修改</a>
+					<i class="icon-trash"></i> <a href="{:U('User/delete?id='.$vo['uid'])}" class="confirm-dialog">删除</a>
+					<eq name="vo.status" value="1"> 
+					<i class="icon-lock"></i> <a href="{:U('User/changeStatus?method=forbidUser&id='.$vo['uid'])}">锁定</a>
+                    <else/>
+                    <i class="icon-unlock"></i> <a href="{:U('User/changeStatus?method=resumeUser&id='.$vo['uid'])}">启用</a>
+                    </eq>
+					<br>
+					<i class="icon-star-empty"></i> <a href="{:U('AuthManager/addToGroup?group_id=1&uid='.$vo['uid'])}">设用</a>
+					<i class="icon-star"></i> <a href="{:U('AuthManager/addToGroup?group_id=2&uid='.$vo['uid'])}">设代</a>
+					<i class="icon-asterisk"></i> <a href="{:U('AuthManager/addToGroup?group_id=3&uid='.$vo['uid'])}">设管</a>
+				  </td>
+                </tr>
+              </volist>
+              <else/>
+            <td colspan="10">暂时还没有内容! </td>
+                </notempty>
+                </tbody>
+          </table>
+          <div class="row">
+            <div class="dataTables_footer clearfix"> {$_page} </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</block>
+<block name="script"> 
+  <script type="text/javascript">
+	//搜索功能
+	$("#search").click(function(){
+		var url = $(this).attr('url');
+        var query  = $('.search-form').find('input').serialize();
+        query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g,'');
+        query = query.replace(/^&/g,'');
+        if( url.indexOf('?')>0 ){
+            url += '&' + query;
+        }else{
+            url += '?' + query;
+        }
+		window.location.href = url;
+	});
+	//回车搜索
+	$(".search-input").keyup(function(e){
+		if(e.keyCode === 13){
+			$("#search").click();
+			return false;
+		}
+	});
+	</script> 
+</block>

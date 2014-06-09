@@ -1,0 +1,76 @@
+<extend name="Public/base" />
+<block name="body">
+  <div class="page-header">
+    <div class="page-title">
+      <h3>{$meta_title}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="widget box">
+        <div class="widget-header">
+          <h4> <i class="icon-reorder"> </i> {$meta_title}</h4>
+        </div>
+        <div class="widget-content">
+          <form action="{:U('saveAction')}" method="post" class="form-horizontal  row-border">
+            <div class="form-group">
+				<label class="col-md-2 control-label">行为标识</label>
+						<div class="col-md-10">
+                <input type="text"  class="form-control input-width-large" name="name" value="{$data.name}">
+				<span class="help-block">（输入行为标识 英文字母）</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label">行为名称</label>
+              <div class="col-md-10">
+                <input type="text"  class="form-control input-width-large" name="title" value="{$data.title}">
+				<span class="help-block">（输入行为名称）</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label">行为类型</label>
+              <div class="col-md-2"  >
+                <select name="type" class="form-control" >
+                  <volist name=":get_action_type(null,true)" id="vo">
+                    <option value="{$key}">{$vo}</option>
+                  </volist>
+                </select>
+				<span class="help-block">（选择行为类型）</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-md-2 control-label">行为描述</label>
+              <div class="col-md-3"  >
+                  <textarea rows="3" class="form-control" name="remark">{$data.remark}</textarea>				 
+				 <span class="help-block">（输入行为描述）</span>
+              </div>
+            </div>
+            <div class="form-group"  >
+              <label class="col-md-2 control-label">行为规则</label>
+              <div class="col-md-3">
+                  <textarea  rows="3" class="form-control" name="rule">{$data.rule}</textarea> 
+				<span class="help-block">（输入行为规则，不写则只记录日志）</span>
+              </div>
+            </div>
+            <div class="form-group"  >
+              <label class="col-md-2 control-label">日志规则</label>
+              <div class="col-md-4">
+               
+                  <textarea rows="5" class="form-control" name="log">{$data.log}</textarea>
+     
+				<span class="help-block">（记录日志备注时按此规则来生成，支持[变量|函数]。目前变量有：user,time,model,record,data）</span>
+              </div>
+            </div>
+            <div class="form-group"  >
+              <div class="col-md-offset-2 col-md-3 ">
+                <input type="hidden" name="id" value="{$data.id}"/>
+                <button type="submit" class="btn submit-btn ajax-post" target-form="form-horizontal">确 定</button>
+                <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</block>

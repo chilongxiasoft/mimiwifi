@@ -1,0 +1,59 @@
+<extend name="Public/base" />
+
+<block name="body">
+  <div class="page-header">
+    <div class="page-title">
+      <h3>{$meta_title}</h3>
+    </div>
+  </div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="widget box">
+      <div class="widget-header">
+        <h4> <i class="icon-reorder"> </i> {$meta_title}</h4>
+      </div>
+		<div class="widget-content">
+			<form id="form" method="post" class="form-horizontal  row-border">
+					<div class="form-group">
+						<label class="col-md-2 control-label">行为名称</label>
+						<div class="col-md-3">
+							{:get_action($info['action_id'], "title")}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">执行者</label>
+						<div class="col-md-3">
+							{:get_nickname($info['user_id'])}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">执行IP</label>
+						<div class="col-md-3">
+							{:long2ip($info['action_ip'])}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">执行时间</label>
+						<div class="col-md-3">
+							{:date('Y-m-d H:i:s',$info['create_time'])}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2 control-label">备注</label>
+						<div class="col-md-4">
+								<textarea rows="5" readonly="readonly" class="form-control">{$info.remark}</textarea>
+
+						</div>
+					</div>
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-5 " >
+						<button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+					</div>
+				</div>
+			</form>
+		</div>
+    </div>
+  </div>
+</div>
+</block>
+

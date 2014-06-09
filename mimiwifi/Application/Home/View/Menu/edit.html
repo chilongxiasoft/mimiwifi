@@ -1,0 +1,95 @@
+<extend name="Public/base" />
+<block name="body">
+  <div class="page-header">
+    <div class="page-title">
+      <h3>{$meta_title}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="widget box">
+        <div class="widget-header">
+          <h4> <i class="icon-reorder"> </i> {$meta_title}</h4>
+        </div>
+        <div class="widget-content">
+    <form action="{:U()}" method="post" class="form-horizontal row-border">
+        <div class="form-group">
+            <label class="col-md-2 control-label">标题</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control input-width-large" name="title" value="{$info.title|default=''}">
+				<span class="help-block">（用于后台显示的配置标题）</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">排序</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control input-width-large" name="sort" value="{$info.sort|default=0}">
+				<span class="help-block">（用于分组显示的顺序）</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">链接</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control input-width-large" name="url" value="{$info.url|default=''}">
+				<span class="help-block">（U函数解析的URL或者外链）</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">ICON</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control input-width-large" name="icon" value="{$info.icon|default=''}">
+				<span class="help-block">（ Font Awesome Icons）</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">上级菜单</label>
+            <div class="col-md-3">
+                <select name="pid" class="form-control">
+                    <volist name="Menus" id="menu">
+                        <option value="{$menu.id}" <eq name="menu['id']" value="$info['pid']">selected</eq>>{$menu.title_show}</option>
+                    </volist>
+                </select>
+				<span class="help-block">（所属的上级菜单）</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">分组</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control input-width-large" name="group" value="{$info.group|default=''}">
+				<span class="help-block">（用于左侧分组二级菜单）</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">是否隐藏</label>
+            <div class="col-md-10">
+                <label class="radio-inline"><input type="radio" name="hide" value="1" <eq name="info['hide']" value="1">checked</eq>>是</label>
+                <label class="radio-inline"><input type="radio" name="hide" value="0" <eq name="info['hide']" value="0">checked</eq>>否</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">仅开发者模式可见</label>
+            <div class="col-md-10">
+                <label class="radio-inline"><input type="radio" name="is_dev" value="1" <eq name="info['is_dev']" value="1">checked</eq>>是</label>
+                <label class="radio-inline"><input type="radio" name="is_dev" value="0" <eq name="info['is_dev']" value="0">checked</eq>>否</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">说明</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control input-width-large" name="tip" value="{$info.tip|default=''}">
+				<span class="help-block">（菜单详细说明）</span>
+            </div>
+        </div>
+            <div class="form-group"  >
+              <div class="col-md-offset-2 col-md-5 " >
+               <input type="hidden" name="id" value="{$info.id|default=''}">
+            <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+            <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</block>

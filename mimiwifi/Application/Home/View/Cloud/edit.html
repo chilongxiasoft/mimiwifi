@@ -1,0 +1,78 @@
+<extend name="Public/base" />
+<block name="body">
+  <div class="page-header">
+    <div class="page-title">
+      <h3>{$meta_title}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="widget box">
+        <div class="widget-header">
+          <h4> <i class="icon-reorder"> </i> {$meta_title}</h4>
+        </div>
+        <div class="widget-content">
+	<form id="form" action="{:U('saveCloud')}" method="post" class="form-horizontal row-border">
+		<div class="form-group">
+			<label class="col-md-2 control-label">应用点名称<span class="help-block">（应用点名称）</span></label>
+			<div class="col-md-10">
+				<input type="text" class="form-control input-width-large" name="title" value="{$data.title}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 control-label">SN序列号<span class="help-block">（应用点SN序列号）</span></label>
+			<div class="col-md-10">
+				<input type="text" class="form-control input-width-large" name="sn" value="{$data.sn}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 control-label">所属用户ID<span class="help-block">（应用点所属用户ID）</span></label>
+			<div class="col-md-10">
+				<input type="text" class="form-control input-width-large" name="uid" value="{$data.uid}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 control-label">版本<span class="help-block">（应用点版本）</span></label>
+			<div class="col-md-10">
+				<input type="text" class="form-control input-width-large" name="version" value="{$data.version}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 control-label">所属应用点ID<span class="help-block">（应用点所属应用点ID）</span></label>
+			<div class="col-md-10">
+				<input type="text" class="form-control input-width-large" name="node_id" value="{$data.node_id}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 control-label">云认证ID<span class="help-block">（应用点云认证ID）</span></label>
+			<div class="col-md-10">
+				<input type="text" class="form-control input-width-large" name="cloud_id" value="{$data.cloud_id}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 control-label">所属代理商ID<span class="help-block">（应用点所属代理商ID）</span></label>
+			<div class="col-md-10">
+				<input type="text" class="form-control input-width-large" name="agent_id" value="{$data.agent_id}">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 control-label">备注</label>
+			<div class="col-md-10">
+				<textarea name="mark" class="col-md-5" rows="5">{$data.mark}</textarea>
+			</div>
+		</div>
+
+
+            <div class="form-group"  >
+              <div class="col-md-offset-2 col-md-3 ">
+                <input type="hidden" name="id" value="{$data.id}"/>
+                <button type="submit" class="btn submit-btn" target-form="form-horizontal">确 定</button>
+                <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</block>

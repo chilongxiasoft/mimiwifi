@@ -1,0 +1,332 @@
+<extend name="Public/base"/>
+<block name="body">
+  <div class="page-header">
+    <div class="page-title">
+      <h3>{$meta_title}</h3>
+	  <span><a href="javascript:history.back(-1);" class="btn"><<返回</a></span>
+    </div>
+
+  </div>
+<div class="row">
+            <div class="col-md-12">
+              <div class="widget box" id="form_wizard">
+                <div class="widget-header">
+                  <h4>
+                    <i class="icon-reorder">
+                    </i>
+                    {$meta_title} -
+                    <span class="step-title">
+                      Step 1 of 3
+                    </span>
+                  </h4>
+                  <div class="toolbar no-padding">
+                    <div class="btn-group">
+                      <span class="btn btn-xs widget-collapse">
+                        <i class="icon-angle-down">
+                        </i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div class="widget-content">
+                  <form class="form-horizontal" method="post" action="{:U(User/saveUser)}">
+                    <div class="form-wizard">
+                      <div class="form-body">
+                        <ul class="nav nav-pills nav-justified steps">
+                          <li>
+                            <a href="#tab1" data-toggle="tab" class="step">
+                              <span class="number">
+                                1
+                              </span>
+                              <span class="desc">
+                                <i class="icon-ok">
+                                </i>
+                                基本信息
+                              </span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#tab2" data-toggle="tab" class="step">
+                              <span class="number">
+                                2
+                              </span>
+                              <span class="desc">
+                                <i class="icon-ok">
+                                </i>
+                                扩展信息
+                              </span>
+                            </a>
+                          </li>
+                      
+                          <li>
+                            <a href="#tab3" data-toggle="tab" class="step">
+                              <span class="number">
+                                3
+                              </span>
+                              <span class="desc">
+                                <i class="icon-ok">
+                                </i>
+                                确认提交
+                              </span>
+                            </a>
+                          </li>
+                        </ul>
+                        <div id="bar" class="progress progress-striped" role="progressbar">
+                          <div class="progress-bar progress-bar-success">
+                          </div>
+                        </div>
+                        <div class="tab-content">
+                          <div class="alert alert-danger hide-default">
+                            <button class="close" data-dismiss="alert">
+                            </button>
+                            您有一些信息未完善，请按照提示完善所需要的信息！
+                          </div>
+                          <div class="alert alert-success hide-default">
+                            <button class="close" data-dismiss="alert">
+                            </button>
+                            太棒了，请提交! :-)
+                          </div>
+
+                          <div class="tab-pane active" id="tab1">
+                            <h3 class="block padding-bottom-10px">
+                              请输入基本信息
+                            </h3>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                用户名
+                                <span>
+                                  *
+                                </span>
+                              </label>
+                              <div class="col-md-4">
+                                <input type="text" class="form-control " name="username" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                密码
+                                <span>
+                                  *
+                                </span>
+                              </label>
+                              <div class="col-md-4">
+                                <input type="password" class="form-control " name="password" id="submit_form_password"
+                                />
+                                <span class="help-block">
+                                 
+                                </span>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                密码确认
+                                <span>
+                                  *
+                                </span>
+                              </label>
+                              <div class="col-md-4">
+                                <input type="password" class="form-control " name="rpassword"
+                                />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                Email
+                                <span>
+                                  *
+                                </span>
+                              </label>
+                              <div class="col-md-4">
+                                <input type="text" class="form-control  email" name="email" />
+                              </div>
+                            </div>
+                          </div>
+                          <div class="tab-pane" id="tab2">
+                            <h3 class="block padding-bottom-10px">
+                              关于您
+                            </h3>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                Fullname
+                                <span>
+                                  *
+                                </span>
+                              </label>
+                              <div class="col-md-4">
+                                <input type="text" class="form-control " name="fullname" />
+                                <span class="help-block">
+                                  Provide your full name
+                                </span>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                Gender
+                                <span>
+                                  *
+                                </span>
+                              </label>
+                              <div class="col-md-4">
+                                <div class="radio-list">
+                                  <label>
+                                    <input type="radio" name="gender" value="M" data-title="Male" 
+                                    />
+                                    Male
+                                  </label>
+                                  <label>
+                                    <input type="radio" name="gender" value="F" data-title="Female" />
+                                    Female
+                                  </label>
+                                </div>
+                                <label for="gender" class="has-error help-block" generated="true" style="display:none;">
+                                </label>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                Country
+                              </label>
+                              <div class="col-md-4">
+                                <select name="country" id="country_list" class="select2 full-width-fix ">
+                                  <option value="">
+                                  </option>
+                                  <option value="AF">
+                                    Afghanistan
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                Remarks
+                              </label>
+                              <div class="col-md-4">
+                                <textarea class="form-control " rows="3" name="remarks">
+                                </textarea>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="tab-pane" id="tab3">
+                            <h3 class="block padding-bottom-10px">
+                              确认信息
+                            </h3>
+                            <h4 class="form-section">
+                              Account
+                            </h4>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                Username:
+                              </label>
+                              <div class="col-md-4">
+                                <p class="form-control-static" data-display="username">
+                                </p>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                Email:
+                              </label>
+                              <div class="col-md-4">
+                                <p class="form-control-static" data-display="email">
+                                </p>
+                              </div>
+                            </div>
+                            <h4 class="form-section">
+                              Profile
+                            </h4>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                Fullname:
+                              </label>
+                              <div class="col-md-4">
+                                <p class="form-control-static" data-display="fullname">
+                                </p>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                Gender:
+                              </label>
+                              <div class="col-md-4">
+                                <p class="form-control-static" data-display="gender">
+                                </p>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                Country:
+                              </label>
+                              <div class="col-md-4">
+                                <p class="form-control-static" data-display="country">
+                                </p>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                Remarks:
+                              </label>
+                              <div class="col-md-4">
+                                <p class="form-control-static" data-display="remarks">
+                                </p>
+                              </div>
+                            </div>
+                            <h4 class="form-section">
+                              Billing
+                            </h4>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+                                Card Holder Name:
+                              </label>
+                              <div class="col-md-4">
+                                <p class="form-control-static" data-display="card_name">
+                                </p>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="control-label col-md-3">
+
+                                Card Number:
+                              </label>
+                              <div class="col-md-4">
+                                <p class="form-control-static" data-display="card_number">
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-actions fluid">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="col-md-offset-3 col-md-9">
+							  
+                              <a href="javascript:void(0);" class="btn button-previous">
+                                <i class="icon-angle-left">
+                                </i>
+                                后退
+                              </a>
+                              <a href="javascript:void(0);" class="btn btn-primary button-next">
+                                继续
+                                <i class="icon-angle-right">
+                                </i>
+                              </a>
+                              <a href="javascript:void(0);" class="btn btn-success button-submit">
+                                提交
+                                <i class="icon-angle-right">
+                                </i>
+                              </a>
+							  <button class="btn submit-btn ajax-post" id="submit" type="submit" target-form="form-horizontal">确 定</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+
+</block>
+<block name="script">
+</block>

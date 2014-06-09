@@ -1,0 +1,78 @@
+<extend name="Public/base"/>
+<block name="body">
+  <div class="page-header">
+    <div class="page-title">
+      <h3>{$meta_title}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="widget box">
+       <div class="widget-content no-padding">
+          <div class="row">
+            <div class="dataTables_header clearfix">
+				<div class="col-md-12 dataTables_filter ">
+            <volist name="Think.config.CONFIG_GROUP_LIST" id="group"> <a  class="btn <eq name="id" value="$key">btn-success
+              <else/>
+              btn-info
+              </eq>
+              " href="{:U('?id='.$key)}">{$group}配置</a>&nbsp; </volist>
+				</div>
+			</div>
+		</div>
+
+        <form action="{:U('save')}" method="post" class="form-horizontal row-border">
+          <volist name="list" id="config">
+		  <span></span>
+            <div class="form-group">
+              <label class="col-md-3 control-label">{$config.title}</label>
+              <div class="col-md-9">
+                <switch name="config.type">
+                  <case value="0">
+                    <input type="text" class="form-control input-width-small" name="config[{$config.name}]" value="{$config.value}">
+                  </case>
+                  <case value="1">
+                    <input type="text" class="form-control input-width-large" name="config[{$config.name}]" value="{$config.value}">
+                  </case>
+                  <case value="2">
+                    <div class="col-md-5">
+                      <textarea class="form-control" rows="5" name="config[{$config.name}]">{$config.value}</textarea>
+                    </div>
+                  </case>
+                  <case value="3">
+                    <div class="col-md-5">
+                      <textarea class="form-control" rows="5" name="config[{$config.name}]">{$config.value}</textarea>
+                    </div>
+                  </case>
+                  <case value="4">
+				  <div class="col-md-5">
+                    <select name="config[{$config.name}]" class="form-control">
+                      <volist name=":parse_config_attr($config['extra'])" id="vo"> <option value="{$key}" 
+                        <eq name="config.value" value="$key">selected</eq>
+                        >{$vo}
+                        </option>
+                      </volist>
+                    </select>
+				</div>
+                  </case>
+                </switch>
+                <span class="help-block">（{$config.remark}）</span> </div>
+            </div>
+          </volist>
+          <div class="form-group">
+            <div class="col-md-offset-4">
+              <empty name="list">
+                <button type="submit" disabled class="btn submit-btn disabled" target-form="form-horizontal">确 定</button>
+                <else/>
+                <button type="submit" class="btn submit-btn ajax-post" target-form="form-horizontal">确 定</button>
+              </empty>
+              <button class="btn btn-return" onclick="javascript:history.back(-1);return false;">返 回</button>
+            </div>
+          </div>
+        </form>
+      </div>
+	 </div>
+    </div>
+  </div>
+  
+</block>

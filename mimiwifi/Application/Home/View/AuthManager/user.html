@@ -1,0 +1,99 @@
+<!-- 成员授权编辑页面 -->
+<extend name="Public/base" />
+<block name="body">
+  <div class="page-header">
+    <div class="page-title">
+      <h3>{$meta_title}</h3>
+	  <span>
+		<a href="{:U('AuthManager/index')}" class="btn"><< 返回</a>
+		<a class="btn" href="{:U('AuthManager/access',array('group_name'=>I('group_name') ,'group_id'=> I('group_id')))}">系统权限</a>
+		<a class="btn" href="javascript:;">成员授权</a>
+	  </span>
+    </div>
+  </div>
+<div class="row">
+    <div class="col-md-12">
+      <div class="widget box">
+        <div class="widget-content no-padding">
+          <div class="row">
+            <div class="dataTables_header clearfix">
+				<form class="add-user" action="{:U('addToGroup')}" method="post" enctype="application/x-www-form-urlencoded" >
+					<div class="col-md-3">
+						<input class="form-control" type="text" name="uid" placeholder="请输入uid,多个用英文逗号分隔">
+						<input type="hidden" name="group_id" value="{:I('group_id')}">
+					</div>
+					<div class="col-md-6">
+						<a type="submit" class="btn btn-info ajax-post add-btn" target-form="add-user">新 增</a>
+					</div>
+             </form>
+			
+			
+			
+			
+             <div class="col-md-3 dataTables_filter">
+			 <select name="group" class="form-control">
+			    <volist name="auth_group" id="vo">
+				    <option value="{:U('AuthManager/user',array('group_id'=>$vo['id'],'group_name'=>$vo['title']))}" <eq name="vo['id']" value="$this_group['id']">selected</eq> >{$vo.title}</option>
+			    </volist>
+			</select>
+			</div>
+            </div>
+          </div>
+   
+    <!-- 数据列表 -->
+	<table class="table table-striped table-bordered table-hover table-checkable">
+            <thead>
+              <tr>
+                <th class="checkbox-column"> <input type="checkbox" class="uniform">
+                <th class="">UID</th>
+                <th class=""><i class="icon-user"></i> 用户名</th>
+                <th class=""><i class="icon-flag"></i> 名称</th>
+                <th class=""><i class="icon-star-empty "></i> 类型</th>
+                <th class=""><i class="icon-signal"></i> 登录次数</th>
+                <th class=""><i class="icon-time"></i> 最后登录时间</th>
+                <th class=""><i class="icon-map-marker"></i> 最后登录IP</th>
+                <th class=""><i class="icon-refresh"></i> 状态</th>
+                <th class=""><i class="icon-cog"></i> 操作</th>
+              </tr>
+            </thead>
+            <tbody>
+                <notempty name="_list">
+              
+              <volist name="_list" id="vo">
+                <tr>
+                  <td class="checkbox-column"><input type="checkbox" class="uniform ids" name="id[]" value="{$vo.uid}" /></td>
+                  <td>{$vo.uid}</td>
+                  <td>{$vo.username}</td>
+                  <td>{$vo.nickname}</td>
+                  <td>{$vo.type}</td>
+                  <td>{$vo.login}</td>
+                  <td><span>{$vo.last_login_time|time_format}</span></td>
+                  <td><span>{:long2ip($vo['last_login_ip'])}</span></td>
+                  <td>{$vo.status_text}</td>
+                  <td>
+                    <i class="icon-trash "> <a href="{:U('AuthManager/removeFromGroup?uid='.$vo['uid'].'&group_id='.I('group_id'))}" class="confirm-dialog">解除授权</a>
+				  </td>
+                </tr>
+              </volist>
+                </notempty>
+            </tbody>
+    </table>
+		<div class="row">
+            <div class="dataTables_footer clearfix"> {$_page} </div>
+        </div>
+
+			</div>
+		</div>
+	</div>
+</div>
+</block>
+<block name="script">
+<script type="text/javascript" charset="utf-8">
+    +function($){
+		//切换用户组
+        $('select[name=group]').change(function(){
+			location.href = this.value;
+        });
+    }(jQuery);
+</script>
+</block>

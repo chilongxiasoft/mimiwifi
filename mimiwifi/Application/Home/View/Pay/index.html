@@ -1,0 +1,102 @@
+<extend name="Public/base" />
+<block name="body">
+  <div class="page-header">
+    <div class="page-title">
+      <h3>{$meta_title}</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="widget box">
+        <div class="widget-content no-padding">
+         <div class="row">
+            <div class="dataTables_header clearfix">
+				<div class="col-md-6">
+					<a class="btn" href="{:U('add')}">新 增</a>
+					<a class="btn ajax-post confirm" url="{:U('delete')}" target-form="ids">删 除</a>
+				</div>
+              <div class="col-md-6 dataTables_filter">
+                  <label>
+                  <div class="input-group search-form"> <span class="input-group-addon"><a id="search" href="javascript:;" id="search" url="{:U('index')}"><i class="icon-search"></i></a></span>
+                    <input type="text" class="form-control search-input" placeholder="请输入MAC或SN" name="sn" value="{:I('sn')}">
+                  </div>
+                  </label>
+              </div>
+            </div>
+         </div>
+		<table class="table table-striped table-bordered table-hover table-checkable">
+            <thead>
+              <tr>
+						<th class="checkbox-column"> <input type="checkbox" class="uniform"></th>
+                        <th>设备ID</th>
+                        <th>MAC</th>
+                        <th>SN</th>
+                        <th>所属用户</th>
+                        <th>所属代理</th>
+                        <th>应用点</th>
+                        <th>云认证</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+				<notempty name="_list">
+                <volist name="_list" id="vo">
+                    <tr>
+						<td class="checkbox-column"><input type="checkbox" class="uniform ids" name="id[]" value="{$vo.id}" /></td>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.mac}</td>
+                        <td>{$vo.sn}</td>
+                        <td>{$vo.uid}</td>
+                        <td>{$vo.agent_id}</td>
+                        <td>{$vo.node_id}</td>
+                        <td>{$vo.cloud_id}</td>
+                        <td>{$vo.status_text}</a>
+                        </td>
+                        <td>
+                           <i class="icon-edit"></i> <a title="编辑" href="{:U('edit?id='.$vo['id'])}">编辑</a>
+                           <i class="icon-trash"></i>  <a class="" title="删除" href="{:U('delete?id='.$vo['id'])}">删除</a>
+                        </td>
+                    </tr>
+                </volist>
+				<else/>
+				<td colspan="10" class="text-center"> aOh! 暂时还没有内容! </td>
+				</notempty>
+                </tbody>
+            </table>
+          <div class="row">
+            <div class="dataTables_footer clearfix"> {$_page} </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        +function($) {
+            //搜索功能
+            $("#search").click(function() {
+                var url = $(this).attr('url');
+                var query = $('.search-form').find('input').serialize();
+                query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+                query = query.replace(/^&/g, '');
+                if (url.indexOf('?') > 0) {
+                    url += '&' + query;
+                } else {
+                    url += '?' + query;
+                }
+                window.location.href = url;
+            });
+            //回车搜索
+            $(".search-input").keyup(function(e) {
+                if (e.keyCode === 13) {
+                    $("#search").click();
+                    return false;
+                }
+            });
+  
+        }(jQuery);
+    </script>
+</block>
