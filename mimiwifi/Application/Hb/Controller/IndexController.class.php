@@ -45,15 +45,35 @@ class IndexController extends Controller {
 
 	}else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	
-	    
 
 		$data = file_get_contents("php://input");
 		$obj = json_decode($data, true);
 		
+		$hb=M('hb');//链接数据库
+		$device=M('device');//链接数据库
+		
 		$map['gwmac']  = $obj['gwmac'];
 		$map['gwaddr'] = $obj['gwaddr'];
-		$result = D('HB')->add($map);
+		$map['usrnum'] = $obj['usrnum'];
 		
+		$condition['gwmac'] = $obj['gwmac'];
+		$consult = $hb->where($condition)->find();//查找到相应的DEVICE，看其中的status状态
+		//var_dump($consult);exit;
+		if(empty($consult))//为空，说明这个POST过来的DEVICE MAC地址有问题，不处理
+		{
+		
+		}
+		else
+		{
+		  if($consult['device_status']=='0')//如果收到心跳包的时候还是状态为0，则状态变为1
+		  {
+		    $map['device_status'] = '1';
+		  }
+		}
+		
+		//var_dump($map);exit;
+		$lastId = $hb->add($map);//添加到数据库
+		//var_dump($lastId);exit;
 		
 		$file = fopen("log.html", "a+");		
 		fwrite($file, "gwmac: $obj[gwmac] gwaddr:  $obj[gwaddr] gwport:  $obj[gwport]  usrnum: $obj[usrnum] gwwanaddr: $obj[gwwanaddr] gwlanaddr: $obj[gwlanaddr] <br>\r\n");
