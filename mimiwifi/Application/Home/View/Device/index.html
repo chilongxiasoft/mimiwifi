@@ -55,8 +55,8 @@
 				  <i class="icon-asterisk"></i> <a href="{:U('User/edit?id='.$vo['uid'])}" class="confirm-dialog">云认证</a>
 				</td>
 				<td class="text-left">
-				  状态: {$vo.gw_ip}</br>
-				  网关: 192.168.88.1{$vo.gw_ip}{$vo.gw_port}</br>
+				  状态: <a style="color:blue;"><?php  if($vo['status']=='0') { echo ("掉线"); } else { echo ("在线"); } ?></a></br>
+				  网关: {$vo.gw_ip}</br>
 				  出口: {$vo.wan_ip}</br>
 				  VPN:{$vo.vpn_cip}
 				</td>

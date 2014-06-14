@@ -23,8 +23,42 @@ class DeviceController extends AdminController {
         $sn       =   I('sn');
         $map['status']  =   array('egt',0);
         $map['sn']  =  array('like', '%'.(string)$sn.'%');
-		$list   = $this->lists('Device', $map);
+		 $list   = $this->lists('Device', $map);
         int_to_string($list);
+		 //var_dump($list);exit;
+		 
+		 //查看并更新各个路由的状态
+		 foreach($list as $v)
+		 {
+		  //dump($v);exit;
+		   //首先计算最近心跳时间距离现在有多久
+		   $time = time();
+		   $timediff=$time-strtotime($v['last_utime']);
+		   $days = intval($timediff/86400);
+          $remain = $timediff%86400;
+          $hours = intval($remain/3600);
+          $remain = $remain%3600;
+          $mins = intval($remain/60);
+          $secs = $remain%60;
+          $res = array("day" => $days,"hour" => $hours,"min" => $mins,"sec" => $secs);
+		  
+		   //判断上次心跳到现在是否时间超限
+		   if(($days=='0')&&($hours=='0')&&((int)$mins<=5))
+		   {
+		   //没有超过时间上限
+		   
+		   }
+		   else
+		   {
+		   //超过5分钟时间上限,状态改为掉线
+		   $device=M('device');//链接数据库
+		   $condition['mac'] = $v['mac'];
+		   $data['status'] = '0';//更新设备表的状态
+			$device->where($condition)->save($data);
+		   }
+		 }
+		 
+		 $list   = $this->lists('Device', $map);//再一次获取所有数据，因为上面的状态可能被更新
         $this->assign('_list', $list);
         $this->meta_title = '设备列表';
         $this->display();
