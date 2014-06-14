@@ -55,9 +55,11 @@ class IndexController extends Controller {
 		$map['gwmac']  = $obj['gwmac'];
 		$map['gwaddr'] = $obj['gwaddr'];
 		$map['usrnum'] = $obj['usrnum'];
+		$map['time'] = date("Y-m-d H:i:s",time());
 		
-		$condition['gwmac'] = $obj['gwmac'];
-		$consult = $hb->where($condition)->find();//查找到相应的DEVICE，看其中的status状态
+		//设备表中查找到相应的DEVICE，看其中的status状态
+		$condition['mac'] = $obj['gwmac'];
+		$consult = $device->where($condition)->find();
 		//var_dump($consult);exit;
 		if(empty($consult))//为空，说明这个POST过来的DEVICE MAC地址有问题，不处理
 		{
@@ -65,29 +67,23 @@ class IndexController extends Controller {
 		}
 		else
 		{
-		  if($consult['device_status']=='0')//如果收到心跳包的时候还是状态为0，则状态变为1
+		  if($consult['status']=='0')//如果收到心跳包的时候还是状态为0，则Device状态变为1(在线状态)
 		  {
 		    $map['device_status'] = '1';
+			
+			$online['status'] = 1;//更新设备表的状态
+			$work=$device->where($condition)->save($online);
+          //dump($work);exit;
 		  }
+		   $time['last_utime'] = date("Y-m-d H:i:s",time());//更新最后心跳时间
+		   $device->where($condition)->save($time);
 		}
 		
 		//var_dump($map);exit;
 		$lastId = $hb->add($map);//添加到数据库
 		//var_dump($lastId);exit;
 		
-		$file = fopen("log.html", "a+");		
-		fwrite($file, "gwmac: $obj[gwmac] gwaddr:  $obj[gwaddr] gwport:  $obj[gwport]  usrnum: $obj[usrnum] gwwanaddr: $obj[gwwanaddr] gwlanaddr: $obj[gwlanaddr] <br>\r\n");
-
-		if ($obj[usrnum])	
-		{
-			fwrite($file, "{<br>\r\n");
-			foreach ($obj[datas] as $data)
-			{
-				fwrite($file, "type $data[type] mac $data[mac] start $data[start] used $data[used] end $data[end]<br>\r\n");	
-			}
-			fwrite($file, "}<br>\r\n");
-		}
-		fclose($file);	
+			
 		
 	  }
 	}
