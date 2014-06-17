@@ -32,9 +32,15 @@ class DeviceController extends AdminController {
 		 {
 		  //dump($v);exit;
 		   //首先计算最近心跳时间距离现在有多久
-		   $time = time();
-		   $timediff=$time-strtotime($v['last_utime']);
-		   $days = intval($timediff/86400);
+		 
+		if($v['status']=='1')//在线则计算在线时间
+		{
+		  $time = time();
+		  
+		  $timediff=$time-strtotime($v['last_utime']);
+		  
+		  $days = intval($timediff/86400);
+		 // dump($timediff);exit;
           $remain = $timediff%86400;
           $hours = intval($remain/3600);
           $remain = $remain%3600;
@@ -42,24 +48,44 @@ class DeviceController extends AdminController {
           $secs = $remain%60;
           $res = array("day" => $days,"hour" => $hours,"min" => $mins,"sec" => $secs);
 		  
+		  $onlinetime=$days.'天'.$hours.'小时'.$mins.'分'.$secs.'秒';
+		}
+		  
 		   //判断上次心跳到现在是否时间超限
 		   if(($days=='0')&&($hours=='0')&&((int)$mins<=5))
 		   {
 		   //没有超过时间上限
-		   
+		    $device=M('device');//链接数据库
+		    $condition['mac'] = $v['mac'];
+		    $data['status'] = '1';//更新设备表的状态
+			$data['onlinetime'] = $onlinetime;//更新设备表的在线时间
+			//var_dump($data);exit;
+			$RESULT=$device->where($condition)->save($data);
+		  // var_dump($condition);exit;
 		   }
 		   else
 		   {
-		   //超过5分钟时间上限,状态改为掉线
-		   $device=M('device');//链接数据库
-		   $condition['mac'] = $v['mac'];
-		   $data['status'] = '0';//更新设备表的状态
+		    //超过5分钟时间上限,状态改为掉线,清除上次登录信息
+		    $device=M('device');//链接数据库
+		    $condition['mac'] = $v['mac'];
+		    $data['status'] = '0';//更新设备表的状态
+			$data['gw_ip'] = '';//清除上次登录信息
+			$data['usrnum'] = '';//清除上次登录信息
+			//$data['usrnum'] = '';//清除上次登录信息
+			$data['onlinetime'] = '0天0小时0分0秒';//更新设备表的状态
 			$device->where($condition)->save($data);
 		   }
+		   $days=999;
+		   $hours=999;
+		   $mins=999;
+		   $secs=999;
 		 }
 		 
-		 $list   = $this->lists('Device', $map);//再一次获取所有数据，因为上面的状态可能被更新
+		$list = $this->lists('Device', $map);//再一次获取所有数据，因为上面的状态可能被更新
+		
         $this->assign('_list', $list);
+		
+		//var_dump($res);exit;
         $this->meta_title = '设备列表';
         $this->display();
     }

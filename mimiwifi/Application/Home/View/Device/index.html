@@ -55,14 +55,15 @@
 				  <i class="icon-asterisk"></i> <a href="{:U('User/edit?id='.$vo['uid'])}" class="confirm-dialog">云认证</a>
 				</td>
 				<td class="text-left">
-				  状态: <a style="color:blue;"><?php  if($vo['status']=='0') { echo ("掉线"); } else { echo ("在线"); } ?></a></br>
+				  状态: <?php   if($vo['status']=='0') { ?> <a style="color:red;">掉线</a> <?php }else{ ?>
+				  <a style="color:blue;">在线</a><?php } ?></br>
 				  网关: {$vo.gw_ip}</br>
 				  出口: {$vo.wan_ip}</br>
 				  VPN:{$vo.vpn_cip}
 				</td>
 				<td class="text-left">
-				  当前用户数:</br>
-				  设备在线时长: <span><i class="icon-search"></i> <a href="{:U('User/edit?id='.$vo['uid'])}" class="confirm-dialog">详细</a></span></br>
+				  当前用户数:{$vo.usrnum}</br>
+				  设备在线时长: {$vo.onlinetime} <span><i class="icon-search"></i> <a href="{:U('User/edit?id='.$vo['uid'])}" class="confirm-dialog">详细</a></span></br>
 				  最后上线:</td>
 				<td class="text-left">
 				  用户：{$vo.uid}</br>

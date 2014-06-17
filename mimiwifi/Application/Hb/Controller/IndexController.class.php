@@ -55,6 +55,7 @@ class IndexController extends Controller {
 		$map['gwmac']  = $obj['gwmac'];
 		$map['gwaddr'] = $obj['gwaddr'];
 		$map['usrnum'] = $obj['usrnum'];
+		$map['gwport'] = $obj['gwport'];
 		$map['time'] = date("Y-m-d H:i:s",time());
 		
 		//设备表中查找到相应的DEVICE，看其中的status状态
@@ -71,11 +72,19 @@ class IndexController extends Controller {
 		  {
 		    $map['device_status'] = '1';
 			
-			$online['status'] = 1;//更新设备表的状态
+			$online['last_utime'] = date("Y-m-d H:i:s",time());//更新最后心跳时间,仅当
+			$online['status'] = '1';//更新设备表的状态
 			$work=$device->where($condition)->save($online);
           //dump($work);exit;
 		  }
-		   $time['last_utime'] = date("Y-m-d H:i:s",time());//更新最后心跳时间
+		  //更新路由器当前在线状态，更新Device表
+		   
+		   $time['gw_port'] = $obj['gwport'];//更新端口
+		   $time['vpn_cip'] = $obj['vpncip'];//更新VPN端口
+		   //var_dump($obj['gwaddr']);exit;
+		   $time['gw_ip'] = $obj['gwaddr'];//更新IP号
+		   $time['usrnum'] = $obj['usrnum'];//更新链接用户数
+		   $time['version'] = $obj['version'];//更新软件版本号
 		   $device->where($condition)->save($time);
 		}
 		
